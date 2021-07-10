@@ -35,6 +35,16 @@ function xScale(myData, myXAxis) {
     return myLinearScale;
 }
 
+function yScale(myData, myYAxis) {
+    // create scales
+    var myLinearScale = d3.scaleLinear()
+        .domain([d3.min(myData, d =>d[myYAxis]) *.95,
+        d3.max(myData,d=>d[myYAxis]) *1.05
+        ])
+        .range([height,0]);
+    return myLinearScale;
+}
+
 //MAIN--------------------
 
 //Loads the data from the csv
@@ -54,9 +64,7 @@ d3.csv(dataPath).then((importedData)=>{
    var xLinearScale = xScale(data, 'poverty');
 
     // find y scale range
-    var yLinearScale = d3.scaleLinear()
-    .domain([d3.min(data, d => d.obesity)*.95, d3.max(data, d => d.obesity)*1.05])
-    .range([height, 0]);
+    var yLinearScale = yScale(data, 'obesity');
 
 
 
@@ -147,7 +155,6 @@ d3.csv(dataPath).then((importedData)=>{
         .attr("x", 0-margin.left)
         .classed("inactive", true)
         .text("Lacks Healthcare %");
-
 
 
 
