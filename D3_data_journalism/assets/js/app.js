@@ -148,7 +148,6 @@ d3.csv(dataPath).then((importedData)=>{
         .classed("inactive", true)
         .text("Lacks Healthcare %");
 
-        
 
 
 
