@@ -100,6 +100,55 @@ function renderAxesX(newXScale, xAxis) {
     return yAxis;
   }
 
+  // function used for updating circles group with new tooltip
+function updateToolTip(chosenXAxis, circlesGroup,theState) {
+
+    var labelx;
+    var labely;
+  
+    if (chosenXAxis === "poverty") {
+      label = "Poverty Rate:";
+    }
+    
+    else if (chosenXAxis === "income") {
+        label = "Household Income:";
+      }
+    
+    else {
+      label = "Median Age:";
+    }
+
+    if (chosenyAxis === "obesity") {
+        label = "Obesity %:";
+      }
+      
+      else if (chosenYAxis === "smokes") {
+          label = "Smoking %:";
+        }
+      
+      else {
+        label = "Lacks Healthcare %:";
+      }
+  
+    var toolTip = d3.tip()
+      .attr("class", "tooltip")
+      .offset([80, -60])
+      .html(`${d.rockband}<br>${label} ${d[chosenXAxis]}`);
+      });
+  
+    circlesGroup.call(toolTip);
+  
+    circlesGroup.on("mouseover", function(data) {
+      toolTip.show(data);
+    })
+      // onmouseout event
+      .on("mouseout", function(data, index) {
+        toolTip.hide(data);
+      });
+  
+    return circlesGroup;
+  }
+
 //MAIN--------------------
 
 //Loads the data from the csv
