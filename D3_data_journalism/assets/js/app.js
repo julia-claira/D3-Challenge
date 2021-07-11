@@ -107,27 +107,27 @@ function updateToolTip(chosenXAxis, circlesGroup,theState) {
     var labely;
   
     if (chosenXAxis === "poverty") {
-      label = "Poverty Rate:";
+      labelx = "Poverty Rate:";
     }
     
     else if (chosenXAxis === "income") {
-        label = "Household Income:";
+        labelx = "Household Income:";
       }
     
     else {
-      label = "Median Age:";
+      labelx = "Median Age:";
     }
 
     if (chosenyAxis === "obesity") {
-        label = "Obesity %:";
+        labely = "Obesity %:";
       }
       
       else if (chosenYAxis === "smokes") {
-          label = "Smoking %:";
+          labely = "Smoking %:";
         }
       
       else {
-        label = "Lacks Healthcare %:";
+        labely = "Lacks Healthcare %:";
       }
   
     var toolTip = d3.tip()
