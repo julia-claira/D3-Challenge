@@ -134,7 +134,7 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
       .attr("class", "tooltip")
       .offset([80, -60])
       .html(function(d){
-          `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${choshenYAxis}`);
+          `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${choshenYAxis}`;
       });
   
     circlesGroup.call(toolTip);
