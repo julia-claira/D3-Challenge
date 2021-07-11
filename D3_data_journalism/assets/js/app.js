@@ -102,7 +102,9 @@ function renderAxesX(newXScale, xAxis) {
 
   // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
-
+    circlesGroup.forEach(row=>{
+        //here I'm going to see how to pass in the information
+    })
     var labelx;
     var labely;
   
@@ -118,7 +120,7 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
       labelx = "Median Age:";
     }
 
-    if (chosenyAxis === "obesity") {
+    if (chosenYAxis === "obesity") {
         labely = "Obesity %:";
       }
       
@@ -133,8 +135,8 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
     var toolTip = d3.tip()
       .attr("class", "tooltip")
       .offset([80, -60])
-      .html(function(d){
-          `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${choshenYAxis}`;
+      .html(function(d) {
+          `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${chosenYAxis}`;
       });
   
     circlesGroup.call(toolTip);
