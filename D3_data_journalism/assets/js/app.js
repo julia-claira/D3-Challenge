@@ -101,7 +101,7 @@ function renderAxesX(newXScale, xAxis) {
   }
 
   // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup,theState) {
+function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
 
     var labelx;
     var labely;
@@ -133,7 +133,8 @@ function updateToolTip(chosenXAxis, circlesGroup,theState) {
     var toolTip = d3.tip()
       .attr("class", "tooltip")
       .offset([80, -60])
-      .html(`${d.rockband}<br>${label} ${d[chosenXAxis]}`);
+      .html(function(d){
+          `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${choshenYAxis}`);
       });
   
     circlesGroup.call(toolTip);
@@ -266,8 +267,9 @@ d3.csv(dataPath).then((importedData)=>{
         .attr("value", "healthcareLow") // value to grab for event listener
         .classed("inactive", true)
         .text("Lacks Healthcare %");
-
-
+        
+    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+    
     //event listeners
     // x axis labels event listener
     xlabelsGroup.selectAll("text")
