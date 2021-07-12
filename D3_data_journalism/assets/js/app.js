@@ -101,7 +101,7 @@ function renderAxesX(newXScale, xAxis) {
   }
 
   // function used for updating circles group with new tooltip!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
+function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup, stateText) {
     //circlesGroup.forEach(row=>{
       //  console.log(row);
         //here I'm going to see how to pass in the information
@@ -134,23 +134,33 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
         labely = "Lacks Healthcare %:";
       }
   
+
     var toolTip = d3.tip()
-      .attr("class", "tooltip")
-      .offset([80, -60])
-      .html(function(d) {
-          `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${chosenYAxis}`;
-      });
-  
-    circlesGroup.call(toolTip);
-  
-    circlesGroup.on("mouseover", function(data) {
-      toolTip.show(data);
-    })
-      // onmouseout event
-      .on("mouseout", function(data, index) {
-        toolTip.hide(data);
-      });
-  
+    .attr("class", "tooltip")
+    .offset([80, -60])
+    .html(function(d) {
+      console.log(d);
+      return (`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${chosenYAxis}`);
+    });
+
+  circlesGroup.call(toolTip);
+
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+  })
+    // onmouseout event
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
+
+    circlesGroup.on("mouseover", function(data) {///!!!!!!!!!!!!!!!!!
+        toolTip.show(data);
+      })
+        // onmouseout event
+        .on("mouseout", function(data, index) {
+          toolTip.hide(data);
+        });
+
     return circlesGroup;
   }
 
@@ -272,7 +282,7 @@ d3.csv(dataPath).then((importedData)=>{
         .classed("inactive", true)
         .text("Lacks Healthcare %");
      //---------------------------------------------------------------------------------   
-    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup,stateText);
     
     //event listeners
     // x axis labels event listener
