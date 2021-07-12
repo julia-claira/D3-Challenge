@@ -62,6 +62,7 @@ function renderCirclesX(circlesGroup, stateText, newXScale, chosenXAxis) {
         .duration(1000)
         .attr("x", d => newXScale(d[chosenXAxis]));
 
+
   return circlesGroup;
 }
 
@@ -76,6 +77,7 @@ function renderCirclesY(circlesGroup, stateText, newYScale, chosenYAxis) {
     stateText.transition()
         .duration(1000)
         .attr("y", d => newYScale(d[chosenYAxis]));
+
 
   return circlesGroup;
 }
@@ -100,13 +102,10 @@ function renderAxesX(newXScale, xAxis) {
     return yAxis;
   }
 
-  // function used for updating circles group with new tooltip!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup, stateText) {
-    //circlesGroup.forEach(row=>{
-      //  console.log(row);
-        //here I'm going to see how to pass in the information
-   // })
-   console.log(circlesGroup);
+  // function used for updating circles group with new tooltip
+function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
+
+   
     var labelx;
     var labely;
   
@@ -134,15 +133,19 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup, stateText) {
         labely = "Lacks Healthcare %:";
       }
   
-
     var toolTip = d3.tip()
     .attr("class", "tooltip")
-    .offset([80, -60])
+    .offset([-5, 25])
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
     .html(function(d) {
-      console.log(d);
-      return (`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${chosenYAxis}`);
+      return (`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`);
     });
 
+  //stateText.addEventListener("click", function(){console.log('bye')});
   circlesGroup.call(toolTip);
 
   circlesGroup.on("mouseover", function(data) {
@@ -150,16 +153,10 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup, stateText) {
   })
     // onmouseout event
     .on("mouseout", function(data, index) {
-      toolTip.hide(data);
+        toolTip.hide(data);
     });
 
-    circlesGroup.on("mouseover", function(data) {///!!!!!!!!!!!!!!!!!
-        toolTip.show(data);
-      })
-        // onmouseout event
-        .on("mouseout", function(data, index) {
-          toolTip.hide(data);
-        });
+
 
     return circlesGroup;
   }
@@ -207,15 +204,16 @@ d3.csv(dataPath).then((importedData)=>{
 
     // append initial circles
     var circlesGroup = scatterPlot.selectAll("circle")
-    .data(censusData)
-    .enter()
-    .append("circle")
-    .attr("cx", d => xLinearScale(d['poverty']))
-    .attr("cy", d => yLinearScale(d.obesity))
-    .attr("r", 9)
-    .attr("fill", "green")
-    .attr("opacity", ".7");
-  
+        .data(censusData)
+        .enter()
+        .append("circle")
+        .attr("cx", d => xLinearScale(d['poverty']))
+        .attr("cy", d => yLinearScale(d.obesity))
+        .attr("r", 10)
+        .attr("fill", "green")
+        .attr("opacity", ".7");
+
+    //append state abbr text to circles
     var stateText= scatterPlot.selectAll("text.label")
         .data(censusData)
         .enter()
@@ -225,8 +223,9 @@ d3.csv(dataPath).then((importedData)=>{
         .attr("y", d => yLinearScale(d.obesity))
         .attr("text-anchor", "middle")
         .attr("alignment-baseline","middle")
-        .attr("font-size", "10")
-        .attr("fill", "white");
+        .attr("font-size", "9")
+        .attr("fill", "white")
+        .style("pointer-events", "none");
 
     // Create group for three x-axis labels
     var xlabelsGroup = scatterPlot.append("g")
@@ -282,8 +281,8 @@ d3.csv(dataPath).then((importedData)=>{
         .classed("inactive", true)
         .text("Lacks Healthcare %");
      //---------------------------------------------------------------------------------   
-    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup,stateText);
-    
+    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+    console.log('hi');
     //event listeners
     // x axis labels event listener
     xlabelsGroup.selectAll("text")
@@ -306,7 +305,7 @@ d3.csv(dataPath).then((importedData)=>{
       circlesGroup = renderCirclesX(circlesGroup, stateText, xLinearScale, chosenXAxis);
 
       // updates tooltips with new info
-      //scatterPlot = updateToolTip(chosenXAxis, circlesGroup);
+      scatterPlot = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
       // changes classes to change bold text
       if (chosenXAxis === "poverty") {
@@ -366,7 +365,7 @@ d3.csv(dataPath).then((importedData)=>{
       // updates circles with new x values
       circlesGroup = renderCirclesY(circlesGroup, stateText, yLinearScale, chosenYAxis);
       // updates tooltips with new info
-      //scatterPlot = updateToolTip(chosenXAxis, circlesGroup);
+      scatterPlot = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
       // changes classes to change bold text
       if (chosenYAxis === "obesity") {
