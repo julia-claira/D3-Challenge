@@ -1,3 +1,5 @@
+//clean up/add readme info/push branch to main
+
 //SET BOUNDARIES--------------------
 var svgWidth = 960;
 var svgHeight = 500;
