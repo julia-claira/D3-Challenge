@@ -100,11 +100,13 @@ function renderAxesX(newXScale, xAxis) {
     return yAxis;
   }
 
-  // function used for updating circles group with new tooltip
+  // function used for updating circles group with new tooltip!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
-    circlesGroup.forEach(row=>{
+    //circlesGroup.forEach(row=>{
+      //  console.log(row);
         //here I'm going to see how to pass in the information
-    })
+   // })
+   console.log(circlesGroup);
     var labelx;
     var labely;
   
@@ -157,11 +159,11 @@ function updateToolTip(chosenXAxis,chosenYAxis, circlesGroup) {
 //Loads the data from the csv
 var dataPath = "assets/data/data.csv"; 
 d3.csv(dataPath).then((importedData)=>{
-    var data = importedData;
-    console.log(data[0]);
+    var censusData = importedData;
+    
 
   // convert data into integers for graphing
-  data.forEach(object => {
+  censusData.forEach(object => {
     object.poverty = +object.poverty;
     object.income = +object.income/1000;
     object.age = +object.age;
@@ -169,13 +171,13 @@ d3.csv(dataPath).then((importedData)=>{
     object.smokes = +object.smokes;
     object.healthcareLow = +object.healthcareLow;
   });
-  console.log(data[0]);
+  
 
    // get the Linear Scale for X
-   var xLinearScale = xScale(data, 'poverty');
+   var xLinearScale = xScale(censusData, 'poverty');
 
     // find y scale range
-    var yLinearScale = yScale(data, 'obesity');
+    var yLinearScale = yScale(censusData, 'obesity');
 
 
     // Create initial axis functions
@@ -195,7 +197,7 @@ d3.csv(dataPath).then((importedData)=>{
 
     // append initial circles
     var circlesGroup = scatterPlot.selectAll("circle")
-    .data(data)
+    .data(censusData)
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d['poverty']))
@@ -205,7 +207,7 @@ d3.csv(dataPath).then((importedData)=>{
     .attr("opacity", ".7");
   
     var stateText= scatterPlot.selectAll("text.label")
-        .data(data)
+        .data(censusData)
         .enter()
         .append("text")
         .text(d => d.abbr)
@@ -269,7 +271,7 @@ d3.csv(dataPath).then((importedData)=>{
         .attr("value", "healthcareLow") // value to grab for event listener
         .classed("inactive", true)
         .text("Lacks Healthcare %");
-        
+     //---------------------------------------------------------------------------------   
     var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
     
     //event listeners
@@ -285,7 +287,7 @@ d3.csv(dataPath).then((importedData)=>{
 
       // functions here found above csv import
       // updates x scale for new data
-      xLinearScale = xScale(data, chosenXAxis);
+      xLinearScale = xScale(censusData, chosenXAxis);
 
       // updates x axis with transition
       xAxis = renderAxesX(xLinearScale, xAxis);
@@ -346,7 +348,7 @@ d3.csv(dataPath).then((importedData)=>{
 
       // functions here found above csv import
       // updates x scale for new data
-      yLinearScale = yScale(data, chosenYAxis);
+      yLinearScale = yScale(censusData, chosenYAxis);
 
       // updates x axis with transition
       yAxis = renderAxesY(yLinearScale, yAxis);
